@@ -8,7 +8,10 @@
         VICReg https://github.com/facebookresearch/vicreg 
         SimCLR https://github.com/sthalles/SimCLR
 
+
 > Find Data
+    Go with suggested one
+    Decision: CelebA
 
 
 
