@@ -1,0 +1,22 @@
+> Identify a good representation learning model for natural images:
+    Searched Term: best Representation Learning for Natural images
+        https://arxiv.org/abs/2103.16483
+        https://medium.com/deem-blogs/recent-advances-in-self-supervised-and-unsupervised-visual-representation-learning-2021-2022-347822cc2b55
+        RankMe paper
+    Decision: 
+        DINO   https://github.com/facebookresearch/dino
+        VICReg https://github.com/facebookresearch/vicreg 
+        SimCLR https://github.com/sthalles/SimCLR
+
+> Find Data
+
+
+
+> Try one of the algorithms on the data
+
+
+
+> Implement RankMe
+
+
+> Do the tests
