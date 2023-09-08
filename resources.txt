@@ -5,14 +5,12 @@
         RankMe paper
     Decision: 
         DINO   https://github.com/facebookresearch/dino
-        VICReg https://github.com/facebookresearch/vicreg 
-        SimCLR https://github.com/sthalles/SimCLR
+        VICReg https://github.com/facebookresearch/vicreg
 
 
 > Find Data
     Go with suggested one
     Decision: CelebA
-
 
 
 > Try one of the algorithms on the data
