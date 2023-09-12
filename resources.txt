@@ -16,8 +16,20 @@
 > Try one of the algorithms on the data
 
 
+> Try FID on the data with one of the algorithms
+
+
 
 > Implement RankMe
+
+
+
+> Try RankMe on the data with one of the algorithms
+
+
+
+> Create the projector network based on the paper(optional)
+
 
 
 > Do the tests
