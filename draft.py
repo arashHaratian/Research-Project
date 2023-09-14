@@ -7,6 +7,7 @@ import torch.nn.functional as F
 from RankMe import RankMe
 from ignite.metrics import FID, InceptionScore
 from torchmetrics.image.fid import FrechetInceptionDistance
+from torchmetrics.image.fid import NoTrainInceptionV3
 
 
 
@@ -14,6 +15,7 @@ dino = torch.hub.load('facebookresearch/dino:main', 'dino_resnet50')
 vicreg = torch.hub.load('facebookresearch/vicreg:main', 'resnet50')
 # dinov2 =torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14').eval().cuda()  ## Small network
 ## dinov2 = torch.load("dinov2_vits14_linear4_head.pth")
+# inception = NoTrainInceptionV3(name="inception-v3-compat", features_list=["logits_unbiased"])
 
 
 
@@ -33,13 +35,8 @@ data_iter = iter(data_loader)
 # padded_sample_data = F.pad(sample_data, (2, 2, 3, 3)).to("cuda") # Images should be multiple of 14
 # dinov2(padded_sample_data)
 
-x = RankMe()(vicreg(sample_data).detach())
-y = RankMe()(dino(sample_data).detach())
-
-
-# torch.cat(torch.empty([1,]),x.reshape([1,]))  
-
-
+# x = RankMe(vicreg).evaluate_with_size(sample_data)
+# y = RankMe(dino)(sample_data)
 
 
 
@@ -54,11 +51,11 @@ for i, (x, y) in enumerate(data_loader):
     f_idxs =  ~m_idxs
     male_data.append(x[m_idxs, :, :, :])
     female_data.append(x[f_idxs, :, :, :])
+
+    if i == 2:
+        break
  
 
-
-# male_data = torch.cat(male_data)
-# female_data = torch.cat(female_data)
 male_data_tensor = torch.cat(male_data[0:7]).type(torch.uint8)
 female_data_tensor = torch.cat(female_data[0:25]).type(torch.uint8)
 
@@ -79,10 +76,10 @@ data_loader = DataLoader(data, 113)
 data_iter = iter(data_loader)
 both_data_tensor = next(data_iter)[0]
 
-x = RankMe()(vicreg(male_data_tensor).detach())
-y = RankMe()(vicreg(female_data_tensor).detach())
-z = RankMe()(vicreg(both_data_tensor).detach())
+x = RankMe(vicreg)(male_data_tensor)
+y = RankMe(vicreg)(female_data_tensor)
+z = RankMe(vicreg)(both_data_tensor)
 
-x = RankMe()(dino(male_data_tensor).detach())
-y = RankMe()(dino(female_data_tensor).detach())
-z = RankMe()(dino(both_data_tensor).detach())
+x = RankMe(dino)(male_data_tensor)
+y = RankMe(dino)(female_data_tensor)
+z = RankMe(dino)(both_data_tensor)
