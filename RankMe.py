@@ -3,8 +3,8 @@ from torch import tensor
 
 
 class RankMe:
-    def __init__(self, model) -> None:
-        self.evaluations = torch.empty((1,))
+    def __init__(self, model, device = "cpu") -> None:
+        self.evaluations = torch.empty((1,)).to(device)
         self.model = model
     
     def __call__(self, data:tensor, save_eval = False) -> tensor:
@@ -15,7 +15,8 @@ class RankMe:
         eps = torch.finfo(model_output.dtype).eps
         # sum_range = torch.min(model_output.shape)
 
-        p_ks = (sigma / torch.linalg.norm(sigma, ord = 1) ) + eps
+        # p_ks = (sigma / torch.linalg.norm(sigma, ord = 1) ) + eps
+        p_ks = (sigma / torch.abs(sigma).sum() ) + eps
         rank = torch.exp(-torch.sum(p_ks * torch.log(p_ks)))
         rank = rank.unsqueeze(0)
 
