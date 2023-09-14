@@ -3,11 +3,14 @@ from torch import tensor
 
 
 class RankMe:
-    def __init__(self) -> None:
+    def __init__(self, model) -> None:
         self.evaluations = torch.empty((1,))
+        self.model = model
     
-    def __call__(self, model_output:tensor, save_eval = False) -> tensor:
-
+    def __call__(self, data:tensor, save_eval = False) -> tensor:
+        with torch.no_grad():
+            model_output = self.model(data)
+            
         sigma = self._calc_singular(model_output)
         eps = torch.finfo(model_output.dtype).eps
         # sum_range = torch.min(model_output.shape)
@@ -28,4 +31,19 @@ class RankMe:
     
     def save_evaluation(self, result)-> None:
         self.evaluations = torch.cat((self.evaluations, result))
+    
+
+    def evaluate_with_size(self, data, size = None, save_eval = False):
+        if size == None:
+            size = range(data.shape[0])
+        eval_result = torch.zeros(data.shape[0])
+        for i in size:
+            eval_result[i] = self(data[0:i,:, :, :], save_eval)
         
+        return eval_result
+
+    def del_evaluation(self, index = None):
+        if index:
+            self.evaluations = self.evaluations[index:]
+        else:
+            self.evaluations = torch.empty((1,))
