@@ -10,14 +10,18 @@
 
 > Find Data
     Go with suggested one
+    OR
+    with CIFAR 10 although it is not generated
     Decision: CelebA
+    May try: CIFAR 10
+    
 
 
 > Try one of the algorithms on the data
 
 
-> Try FID on the data with one of the algorithms
-
+> Try FID/InceptionScore on the data with one of the algorithms
+    InceptionScore is for the distinc generated iamges. Try it with both default and your model
 
 
 > Implement RankMe
