@@ -37,6 +37,7 @@ class RankMe:
     def evaluate_with_size(self, data, size = None, save_eval = False):
         if size == None:
             size = range(data.shape[0])
+        size = torch.tensor(size)
         eval_result = torch.zeros(data.shape[0])
         for i in size:
             eval_result[i] = self(data[0:i,:, :, :], save_eval)
