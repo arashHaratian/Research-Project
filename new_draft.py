@@ -8,7 +8,7 @@ from RankMe import RankMe
 from torchmetrics.image.inception import InceptionScore
 from torchmetrics.image.fid import NoTrainInceptionV3
 
-DEVICE = "cpu"
+DEVICE = "cuda"
 
 def generate_bias_data(data_loader, target_attr = 20, early_break = None):
     target_data = []
@@ -39,12 +39,12 @@ inception = NoTrainInceptionV3(name="inception-v3-compat", features_list=["logit
 ## Loading the dataset
 data = datasets.CIFAR10("./dataset", download=True, transform=ToTensor(),
                          target_transform=lambda x: F.one_hot(torch.Tensor([x]).to(torch.int64), 10).squeeze(0)) 
-data_loader = DataLoader(data, 256, shuffle=True)
+data_loader = DataLoader(data, 256)
 
 
 ## Create biased data
-target_idx = [0,1, 3, 2]
-male_data, female_data = generate_bias_data(data_loader, target_idx, 40)
+target_idx = torch.randint(0, 10, (5,))
+male_data, female_data = generate_bias_data(data_loader, target_idx)
 
 
 
@@ -57,7 +57,7 @@ female_data = female_data[:min_size,:, :, :].to(DEVICE)
 
 
 ## Creating unbiased data
-data_loader = DataLoader(data, batch_size= min_size, shuffle = True)
+data_loader = DataLoader(data, batch_size = min_size, shuffle = True)
 data_iter = iter(data_loader)
 unbiased_data = next(data_iter)[0]
 
@@ -76,9 +76,9 @@ rankme_male = RankMe(vicreg, DEVICE)
 rankme_female = RankMe(vicreg, DEVICE)
 
 ## Evaluating RankMe on the data
-rankme_general(unbiased_data, True)
-rankme_male(male_data, True)
-rankme_female(female_data, True)
+rankme_general(unbiased_data, save_eval=True)
+rankme_male(male_data, save_eval=True)
+rankme_female(female_data, save_eval=True)
 
 
 rankme_general = RankMe(inception, DEVICE)

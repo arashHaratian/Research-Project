@@ -6,8 +6,6 @@
     Decision: 
         DINO   https://github.com/facebookresearch/dino
         VICReg https://github.com/facebookresearch/vicreg
-        TODO: Try Inception
-
 
 
 > Find Data
@@ -21,8 +19,6 @@
 
 > Try one of the algorithms on the data
 
-    TODO: Make data bias on more than one attribute
-
 
 > Try FID/InceptionScore on the data with one of the algorithms
     InceptionScore is for the distinc generated iamges. Try it with both default and your model
@@ -34,6 +30,9 @@
 
 > Try RankMe on the data with one of the algorithms
 
+
+
+> Create the projector network based on the paper(optional)
 
 
 

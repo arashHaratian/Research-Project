@@ -1,15 +1,21 @@
 import torch
 from torch import tensor
-
+from torch.utils.data import DataLoader
 
 class RankMe:
     def __init__(self, model, device = "cpu") -> None:
-        self.evaluations = torch.empty((1,)).to(device)
         self.model = model
+        self.device = device
+        self.evaluations = torch.empty((1,)).to(self.device)
     
-    def __call__(self, data:tensor, save_eval = False) -> tensor:
+    def __call__(self, data:tensor, representation_dim = 2048, save_eval = False) -> tensor:
+
+        model_output = torch.zeros((data.shape[0], representation_dim))
+        data_loader = DataLoader(data, 256)
         with torch.no_grad():
-            model_output = self.model(data)
+            for batch, x in enumerate(data_loader):
+                x = x.to(self.device)
+                model_output[(batch*256):((batch+1)*256), :] = self.model(x)
             
         sigma = self._calc_singular(model_output)
         eps = torch.finfo(model_output.dtype).eps
@@ -19,7 +25,7 @@ class RankMe:
         p_ks = (sigma / torch.abs(sigma).sum() ) + eps
         rank = torch.exp(-torch.sum(p_ks * torch.log(p_ks)))
         rank = rank.unsqueeze(0)
-
+        rank = rank.to(self.device)
         if save_eval:
             self.evaluations = torch.cat((self.evaluations, rank))
             

@@ -24,10 +24,10 @@ data = datasets.CelebA("./dataset", download=True, split='all', transform=ToTens
 data_loader = DataLoader(data, 256)
 data_iter = iter(data_loader)
 
-# sample_data = next(data_iter)[0]
-# plt.imshow(sample_data[0,:,:,:].permute(1, 2, 0))
-# plt.show()
-# plt.close()
+sample_data = next(data_iter)[0]
+plt.imshow(sample_data[0,:,:,:].permute(1, 2, 0))
+plt.show()
+plt.close()
 
 
 # vicreg(sample_data)
