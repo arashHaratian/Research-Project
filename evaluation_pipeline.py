@@ -88,9 +88,9 @@ torch.save(nontarget_data, 'nontarget_data.pt')
 vicreg = vicreg.to(DEVICE)
 
 ## Creating the RankMe objects
-rankme_general = RankMe(vicreg, DEVICE)
-rankme_target = RankMe(vicreg, DEVICE)
-rankme_nontarget = RankMe(vicreg, DEVICE)
+rankme_general = RankMe(vicreg, 256, DEVICE)
+rankme_target = RankMe(vicreg, 256, DEVICE)
+rankme_nontarget = RankMe(vicreg, 256, DEVICE)
 
 ## Creating FID metric and needed function
 metrics = FID(2048, vicreg)
@@ -117,8 +117,8 @@ nontarget_rankme_val = rankme_nontarget(nontarget_data, save_eval = True)
 
 ## Checking of rankme results are reasonable
 ## We expect to have an increasing score as we get more data
-# rankme_target.valuate_with_size(target_data, torch.arange(0, min_size, 1000),True)
-# rankme_nontarget.valuate_with_size(nontarget_data, torch.arange(0, min_size, 1000),True)
+# rankme_target.evaluate_with_size(target_data, torch.arange(0, min_size, 256),True)
+# rankme_nontarget.evaluate_with_size(nontarget_data, torch.arange(0, min_size, 256),True)
 
 ## Evaluating InceptionScore on the biased data 
 inception = InceptionScore(vicreg)
@@ -186,7 +186,7 @@ del(target_data_loader)
 
 
 ## Load the nontarget data and calculate fid
-nontarget_data = torch.load('target_data.pt')
+nontarget_data = torch.load('nontarget_data.pt')
 nontarget_data_loader = DataLoader(nontarget_data, 256)
 default_evaluator = Engine(eval_step)
 metrics.attach(default_evaluator, "fid")

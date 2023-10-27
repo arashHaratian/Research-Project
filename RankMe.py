@@ -3,19 +3,20 @@ from torch import tensor
 from torch.utils.data import DataLoader
 
 class RankMe:
-    def __init__(self, model, device = "cpu") -> None:
+    def __init__(self, model, batch_size, device = "cpu") -> None:
         self.model = model
         self.device = device
         self.evaluations = torch.empty((1,)).to(self.device)
+        self.batch_size = batch_size
     
     def __call__(self, data:tensor, representation_dim = 2048, save_eval = False) -> tensor:
 
         model_output = torch.zeros((data.shape[0], representation_dim))
-        data_loader = DataLoader(data, 256)
+        data_loader = DataLoader(data, self.batch_size)
         with torch.no_grad():
             for batch, x in enumerate(data_loader):
                 x = x.to(self.device)
-                model_output[(batch*256):((batch+1)*256), :] = self.model(x)
+                model_output[(batch*self.batch_size):((batch+1)*self.batch_size), :] = self.model(x)
             
         sigma = self._calc_singular(model_output)
         eps = torch.finfo(model_output.dtype).eps
@@ -43,10 +44,11 @@ class RankMe:
     def evaluate_with_size(self, data, size = None, save_eval = False):
         if size == None:
             size = range(data.shape[0])
-        size = torch.tensor(size)
-        eval_result = torch.zeros(data.shape[0])
-        for i in size:
-            eval_result[i] = self(data[0:i,:, :, :], save_eval)
+
+        eval_result = torch.zeros(size.shape[0])
+        
+        for idx, sample_size in enumerate(size):
+            eval_result[idx] = self(data[0:sample_size,:, :, :], save_eval = save_eval)
         
         return eval_result
 
