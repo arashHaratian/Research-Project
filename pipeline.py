@@ -181,6 +181,11 @@ if __name__ == '__main__':
 
 
 
+    ## Removing biased data to make space
+    del(data_loader)
+    del(target_data_loader)
+    del(nontarget_data_loader)
+    gc.collect()
 
 
     ## =============================================================== UNBIASED DATA =========================================================
@@ -191,13 +196,9 @@ if __name__ == '__main__':
     # data_iter = iter(data_loader)
     # unbiased_data = next(data_iter)[0]
     
-
     ## Removing biased data to make space
     del(target_data)
     del(nontarget_data)
-    del(data_loader)
-    del(target_data_loader)
-    del(nontarget_data_loader)
     gc.collect()
 
     ## Evaluating RankMe on the unbiased data
