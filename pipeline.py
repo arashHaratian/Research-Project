@@ -181,6 +181,17 @@ if __name__ == '__main__':
 
 
 
+
+
+    ## =============================================================== UNBIASED DATA =========================================================
+    ## Creating unbiased data
+    unbiased_data = torch.concat([target_data[:args.min_size//2, :], nontarget_data[:args.min_size//2, :]])
+
+    # data_loader = load_data(args.min_size)
+    # data_iter = iter(data_loader)
+    # unbiased_data = next(data_iter)[0]
+    
+
     ## Removing biased data to make space
     del(target_data)
     del(nontarget_data)
@@ -188,13 +199,6 @@ if __name__ == '__main__':
     del(target_data_loader)
     del(nontarget_data_loader)
     gc.collect()
-
-    ## =============================================================== UNBIASED DATA =========================================================
-    ## Creating unbiased data
-    data_loader = load_data(args.min_size)
-    data_iter = iter(data_loader)
-    unbiased_data = next(data_iter)[0]
-
 
     ## Evaluating RankMe on the unbiased data
     unbiased_rankme_val = rankme_general(unbiased_data, save_eval = True)
