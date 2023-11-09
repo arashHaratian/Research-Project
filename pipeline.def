@@ -1,0 +1,24 @@
+BootStrap: library
+From: ubuntu:22.04
+
+%files
+    collect_data.sh
+    pipeline.py
+    RankMe.py
+    plot_rank_by_size.py
+    plot_pipeline_results.py
+    dataset
+
+%post
+    apt update
+    apt install -y python3 pip
+    pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    pip3 install jupyterlab
+    pip3 install torchmetrics pytorch-ignite
+
+
+
+%runscript
+    sh /collect_data.sh
+    python3 /plot_pipeline_results.py
+    python3 /plot_rank_by_size.py
