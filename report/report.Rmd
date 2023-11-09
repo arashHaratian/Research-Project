@@ -131,7 +131,7 @@ In order to make sure the RankMe score is implemented correctly, the figure $S11
 
 The pipeline is ran with two different settings, once it just creates biased datasets by just dropping "Male" attribute, and once dropping multiple attributes ("Attractive", "High Cheekbones", "Young"). Then, the biased datasets are passed to both VicReg and Dino to get their representations. The RankMe and IS are computed on the obtained representations. Notice that the same pipeline also can be used to calculate the scores for unbiased datasets (where the target attributes are presented equally). Each of the described settings is ran for five times.
 
-First, the results of the RankMe and IS on the setting where only one attribute ("Male") is dropped, can be seen in Figure 2 and Figure 3. As it is evidence in these plots, RankMe score for the unbiased datasets is higher than the datasets that have one attribute dropped. This is while the IS score cannot detect the mode-drop as its scores for all the datasets are very close to each other.
+First, the results of the RankMe and IS on the setting where only one attribute ("Male") is dropped, can be seen in Figure 2 and Figure 3. In this case, biased datasets and unbiased datasets contain 51,200 images. As it is evidence in these plots, RankMe score for the unbiased datasets is higher than the datasets that have one attribute dropped. This is while the IS score cannot detect the mode-drop as its scores for all the datasets are very close to each other.
 
 
 ![The results of the VicReg + RankMe score and VicReg + IS score when one of the attributes is dropped.](../plots/vicreg_single.png)
@@ -142,7 +142,7 @@ First, the results of the RankMe and IS on the setting where only one attribute 
 \newpage
 
 
-Now, the results of the RankMe and IS on the setting where three attributes ("Attractive", "High Cheekbones", "Young") are dropped, can be seen in Figure 4 and Figure 5. In the same way for the Figure 2 and 3, RankMe score can detect the mode-drop while IS score still cannot detect the mode-drop. Notice that in Figure 5, the empirical standard deviation of Dino + RankMe is calculated over 5 runs, and it is visible that the one standard deviations of the scores for "nontarget dataset" and "unbiased dataset" are overlapping. 
+Now, the results of the RankMe and IS on the setting where three attributes ("Attractive", "High Cheekbones", "Young") are dropped, can be seen in Figure 4 and Figure 5. In this case, biased datasets and unbiased datasets contain 21,760 images. In the same way for the Figure 2 and 3, RankMe score can detect the mode-drop while IS score still cannot detect the mode-drop. Notice that in Figure 5, the empirical standard deviation of Dino + RankMe is calculated over 5 runs, and it is visible that the one standard deviations of the scores for "nontarget dataset" and "unbiased dataset" are overlapping. 
 
 <!-- It is worth noting that as the number of dropped attributes increases, the RankMe has a hard task to detect the mode-drop. One explanation can be that the attributes in CelebA are related to each other and by dropping one attribute, some other attributes will -->
 
