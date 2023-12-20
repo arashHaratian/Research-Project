@@ -4,6 +4,7 @@ import re
 import matplotlib.pyplot as plt
 
 plt.rcParams["figure.figsize"] = (20, 11.25)
+plt.rcParams["font.size"] = (15)
 
 results = pd.read_csv("pipeline_results.txt", sep=";", header=None, skiprows=1)
 results = results.values
